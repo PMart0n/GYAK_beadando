@@ -19,22 +19,23 @@ public class DiagramController {
 
     @GetMapping("/diagram")
     public String diagramOldal(Model model) {
-        // összes film
+        //összes film az adatbázisból
         Iterable<Film> filmek = filmRepo.findAll();
 
-        // Összeszámoljuk (Év -> Darabszám)
+        // évjárat szerint számolás
         Map<Integer, Integer> statisztika = new HashMap<>();
         for (Film f : filmek) {
             Integer ev = f.getEv();
-
-            statisztika.put(ev, statisztika.getOrDefault(ev, 0) + 1);
+            if (ev != null) {
+                //
+                statisztika.put(ev, statisztika.getOrDefault(ev, 0) + 1);
+            }
         }
 
-        //  évek növekvő sorrendbe
+        // évek szerint növekvő sorrend
         Map<Integer, Integer> rendezettStat = new TreeMap<>(statisztika);
 
-        //  adatokat  HTML-nek két külön listában
-        //
+        // adatok átadása  HTML-nek két külön listában
         model.addAttribute("evek", rendezettStat.keySet());
         model.addAttribute("darabszamok", rendezettStat.values());
 

@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>MoziDB - Diagram</title>
+    <title>MoziDB - Statisztika</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="is-preload">
 
@@ -39,15 +40,52 @@
     <article id="main">
         <header>
             <h2>Statisztika</h2>
-            <p>Adatok vizualizációja</p>
+            <p>Filmek eloszlása megjelenési év szerint</p>
         </header>
         <section class="wrapper style5">
             <div class="inner">
-                <h3>Filmek és Előadások megoszlása</h3>
-                <p>Itt fog megjelenni a Chart.js diagram a fejlesztés következő szakaszában.</p>
-                <div style="border: 1px dashed #ccc; padding: 50px; text-align: center; color: #666;">
-                    [DIAGRAM HELYE]
+
+                <h3>Éves bontás</h3>
+                <p>Az alábbi diagramon látható, hogy melyik évben hány film került be a rendszerünkbe.</p>
+
+                <div style="width: 90%; margin: 0 auto;">
+                    <canvas id="myChart"></canvas>
                 </div>
+
+                <script th:inline="javascript">
+                    // Adatok átvétele
+                    var evek = [[${evek}]];
+                    var darabszamok = [[${darabszamok}]];
+
+                    // Chart.js konfiguráció
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar', // Oszlopdiagram
+                        data: {
+                            labels: evek, // X teng - Évek
+                            datasets: [{
+                                label: 'Filmek száma',
+                                data: darabszamok, // Y teng - Darabszámok
+                                backgroundColor: 'rgba(237, 73, 51, 0.7)', //
+                                borderColor: 'rgba(237, 73, 51, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: 'Darabszám' }
+                                },
+                                x: {
+                                    title: { display: true, text: 'Évjárat' }
+                                }
+                            }
+                        }
+                    });
+                </script>
+
             </div>
         </section>
     </article>
