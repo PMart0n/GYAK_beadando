@@ -1,5 +1,5 @@
 package com.example.gyak_beadando.entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -16,6 +16,7 @@ public class Mozi {
     private Integer ferohely;
 
     // Kapcsolat Eloadas
+    @JsonIgnore
     @OneToMany(mappedBy = "mozi")
     private List<Eloadas> eloadasok;
 

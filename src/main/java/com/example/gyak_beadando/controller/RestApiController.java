@@ -1,18 +1,41 @@
 package com.example.gyak_beadando.controller;
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.gyak_beadando.entity.Film;
+import com.example.gyak_beadando.entity.Mozi;
+import com.example.gyak_beadando.repository.FilmRepository;
+import com.example.gyak_beadando.repository.MoziRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.List;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-// Fontos: @RestController, nem sima @Controller!
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api")
 public class RestApiController {
 
-    @GetMapping("/teszt")
-    public String tesztVegpont() {
-        return "Működik a REST API!";
+    @Autowired private FilmRepository filmRepo;
+    @Autowired private MoziRepository moziRepo;
+
+    // Összes film lekérdezése JSON-ban
+    // Elérhető: http://localhost:8000/api/filmek
+    @GetMapping("/filmek")
+    public Iterable<Film> getFilmek() {
+        return filmRepo.findAll();
+    }
+
+    // Egy adott film lekérdezése ID alapján
+    // Elérhető: http://localhost:8000/api/filmek/1
+    @GetMapping("/filmek/{id}")
+    public Optional<Film> getFilmById(@PathVariable Long id) {
+        return filmRepo.findById(id);
+    }
+
+    // Összes mozi lekérdezése JSON-ban
+    // Elérhető: http://localhost:8000/api/mozik
+    @GetMapping("/mozik")
+    public Iterable<Mozi> getMozik() {
+        return moziRepo.findAll();
     }
 }
