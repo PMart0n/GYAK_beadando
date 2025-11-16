@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mozi Adatbázis - Adatok</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <style>
+        /* igazitas */
+        table { margin-bottom: 50px; }
+        h2 { margin-top: 40px; color: #ffffff; border-bottom: 2px solid #ED4933; padding-bottom: 10px; display: inline-block; }
+        .wrapper.style5 { padding: 4em 0 2em 0; } /* ne csússzon a fejléc alá */
+    </style>
+</head>
+<body class="is-preload">
+
+<div id="page-wrapper">
+
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/admin">Adminisztráció</a></li>
+                            <li><a href="/login">Belépés</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <article id="main">
+        <header>
+            <h2>Adatbázis Tartalma</h2>
+            <p>A rendszerben tárolt filmek és mozik listája</p>
+        </header>
+
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <h2>Filmek listája</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cím</th>
+                            <th>Év</th>
+                            <th>Hossz (perc)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="film : ${filmek}">
+                            <td th:text="${film.id}"></td>
+                            <td th:text="${film.cim}"></td>
+                            <td th:text="${film.ev}"></td>
+                            <td th:text="${film.hossz}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Mozik listája</h2>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Név</th>
+                            <th>Város</th>
+                            <th>Férőhely</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="mozi : ${mozik}">
+                            <td th:text="${mozi.id}"></td>
+                            <td th:text="${mozi.nev}"></td>
+                            <td th:text="${mozi.varos}"></td>
+                            <td th:text="${mozi.ferohely}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </article>
+
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+    </footer>
+
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
