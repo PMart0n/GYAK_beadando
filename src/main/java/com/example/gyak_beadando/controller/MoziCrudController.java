@@ -1,3 +1,4 @@
+//Nem kell lehet majd törölni
 package com.example.gyak_beadando.controller;
 
 import org.springframework.stereotype.Controller;
