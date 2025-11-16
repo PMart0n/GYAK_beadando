@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MoziDB - Regisztráció</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<div id="page-wrapper">
+
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+                            <li><a href="/mozi-kezeles">CRUD (Szerkesztés)</a></li>
+                            <li><a href="/rest-api">RESTful</a></li>
+                            <li><a href="/uzenetek">Üzenetek</a></li>
+                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/login">Belépés</a></li>
+                            <li><a href="/regisztral">Regisztráció</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <article id="main">
+        <header>
+            <h2>Regisztráció</h2>
+            <p>Hozzon létre új felhasználói fiókot</p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <form method="post" action="#">
+                    <div class="row gtr-uniform">
+                        <div class="col-6 col-12-xsmall">
+                            <input type="text" name="username" id="username" value="" placeholder="Felhasználónév" />
+                        </div>
+                        <div class="col-6 col-12-xsmall">
+                            <input type="email" name="email" id="email" value="" placeholder="Email cím" />
+                        </div>
+                        <div class="col-12">
+                            <input type="password" name="password" id="password" value="" placeholder="Jelszó" />
+                        </div>
+                        <div class="col-12">
+                            <ul class="actions">
+                                <li><input type="submit" value="Regisztráció" class="primary" /></li>
+                                <li><input type="reset" value="Mégse" /></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+    </article>
+
+    <footer id="footer">
+        <ul class="copyright"><li>&copy; Minden jog fenntartva.</li><li>Design: HTML5 UP</li></ul>
+    </footer>
+
+</div>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
