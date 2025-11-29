@@ -43,8 +43,10 @@
         </header>
         <section class="wrapper style5">
             <div class="inner">
+                <div th:if="${error}" style="color:red;" th:text="${error}"></div>
+                <div th:if="${success}" style="color:green;" th:text="${success}"></div>
 
-                <form method="post" action="#">
+                <form th:action="@{/do-register}" method="post">
                     <div class="row gtr-uniform">
                         <div class="col-6 col-12-xsmall">
                             <input type="text" name="username" id="username" value="" placeholder="Felhasználónév" />

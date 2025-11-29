@@ -1,3 +1,16 @@
+package com.example.gyak_beadando.config;
+
+import com.example.gyak_beadando.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -6,17 +19,52 @@ public class WebSecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // Security 3.x-ben így regisztráljuk az auth providert:
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http.authenticationProvider(authenticationProvider());
 
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/adatbazis", "/kapcsolat", "/register", "/do-register",
-                                "/login", "/assets/**", "/images/**", "/diagram", "/rest-api",
-                                "/api/**")
-                        .permitAll()
-                        .requestMatchers("/uzenetek").authenticated()
+                        // Mindenki által elérhető oldalak:
+                        .requestMatchers(
+                                "/",
+                                "/home",
+                                "/adatbazis",
+                                "/diagram",
+                                "/rest-api",
+                                "/kapcsolat",
+                                "/register",
+                                "/do-register",
+                                "/login",
+                                "/assets/**",
+                                "/images/**",
+                                "/api/**"
+                        ).permitAll()
+
+                        // Üzenetek menü: csak bejelentkezett user
+                        .requestMatchers("/uzenetek/**").authenticated()
+
+                        // Admin menü: csak admin
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // minden más csak bejelentkezve
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -25,26 +73,11 @@ public class WebSecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 );
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder auth =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-
-        return auth.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
