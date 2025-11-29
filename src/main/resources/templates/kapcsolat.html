@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kapcsolat</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+</head>
+<body>
+
+<section>
+    <header class="major">
+        <h2>Kapcsolat</h2>
+    </header>
+
+    <!-- Hibák és siker üzenetek -->
+    <p th:if="${error}" style="color:red;" th:text="${error}"></p>
+    <p th:if="${success}" style="color:green;" th:text="${success}"></p>
+
+    <form th:action="@{/kapcsolat-kuld}" method="post">
+
+        <label>Küldő neve:</label>
+        <input type="text" name="kuldoNeve" required />
+
+        <label>Email címe:</label>
+        <input type="email" name="email" required />
+
+        <label>Üzenet:</label>
+        <textarea name="szoveg" rows="5" required></textarea>
+
+        <button type="submit">Küldés</button>
+    </form>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Üzenetek</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+</head>
+<body>
+
+<section>
+    <header class="major">
+        <h2>Beérkezett üzenetek</h2>
+    </header>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Küldő neve</th>
+            <th>Email</th>
+            <th>Üzenet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${uzenetek}">
+            <td th:text="${u.kuldoNeve}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.szoveg}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+
+</body>
+</html>
