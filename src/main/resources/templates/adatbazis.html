@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Mozi Adatbázis - Adatok</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
     <style>
         table { margin-bottom: 50px; }
         h2, h3 { margin-top: 20px; color: #ffffff; border-bottom: 2px solid #ED4933; padding-bottom: 10px; display: inline-block; }
@@ -16,31 +17,46 @@
         /* Aktív gomb stílusa */
         .actions .button.primary { opacity: 0.5; } /* Inaktív gombok halványak */
         .actions .button.primary.active { opacity: 1; border: 2px solid white; } /* Aktív gomb */
+
+        /* Fel a tetejére gomb */
+        #back-to-top {
+            position: fixed; bottom: 20px; left: 20px; z-index: 99;
+            background-color: #ED4933; color: #fff; padding: 10px 15px;
+            border-radius: 4px; opacity: 0.8; text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        #back-to-top:hover { opacity: 1; background-color: #ff624a; }
     </style>
 </head>
-<body class="is-preload">
+<body class="is-preload" id="top">
+
+<a href="#top" id="back-to-top" class="scrolly">▲ Fel</a>
 
 <div id="page-wrapper">
 
     <header id="header">
-        <h1><a href="/">MoziDB</a></h1>
+        <h1><a th:href="@{/}">MoziDB</a></h1>
         <nav id="nav">
             <ul>
                 <li class="special">
                     <a href="#menu" class="menuToggle"><span>Menü</span></a>
                     <div id="menu">
                         <ul>
-                            <li><a href="/">Főoldal</a></li>
-                            <li><a href="/adatbazis">Adatbázis</a></li>
-                            <li><a href="/kapcsolat">Kapcsolat</a></li>
-                            <li><a href="/diagram">Diagram</a></li>
-                            <li sec:authorize="hasRole('ADMIN')"><a href="/film-kezeles" style="color: #ED4933;">CRUD (Szerkesztés)</a></li>
-                            <li sec:authorize="hasRole('ADMIN')"><a href="/admin" style="color: #ED4933;">Admin Felület</a></li>
-                            <li><a href="/rest-api">RESTful API</a></li>
-                            <li sec:authorize="isAuthenticated()"><a href="/uzenetek">Üzenetek</a></li>
-                            <li sec:authorize="!isAuthenticated()"><a href="/login">Belépés</a></li>
-                            <li sec:authorize="!isAuthenticated()"><a href="/regisztral">Regisztráció</a></li>
-                            <li sec:authorize="isAuthenticated()"><form th:action="@{/logout}" method="post" style="margin: 0;"><input type="submit" value="Kijelentkezés" class="button fit small" /></form></li>
+                            <li><a th:href="@{/}">Főoldal</a></li>
+                            <li><a th:href="@{/adatbazis}">Adatbázis</a></li>
+                            <li><a th:href="@{/kapcsolat}">Kapcsolat</a></li>
+                            <li><a th:href="@{/diagram}">Diagram</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/film-kezeles}" style="color: #ED4933;">CRUD (Szerkesztés)</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin}" style="color: #ED4933;">Admin Felület</a></li>
+                            <li><a th:href="@{/rest-api}">RESTful API</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/uzenetek}">Üzenetek</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Belépés</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Regisztráció</a></li>
+                            <li sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                    <input type="submit" value="Kijelentkezés" class="button fit small" />
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -59,17 +75,17 @@
 
                 <ul class="actions fit" style="margin-bottom: 3em;">
                     <li>
-                        <a href="/adatbazis?tab=filmek"
+                        <a th:href="@{/adatbazis(tab='filmek')}"
                            class="button primary fit"
                            th:classappend="${activeTab == 'filmek'} ? 'active'">Filmek</a>
                     </li>
                     <li>
-                        <a href="/adatbazis?tab=mozik"
+                        <a th:href="@{/adatbazis(tab='mozik')}"
                            class="button primary fit"
                            th:classappend="${activeTab == 'mozik'} ? 'active'">Mozik</a>
                     </li>
                     <li>
-                        <a href="/adatbazis?tab=eloadasok"
+                        <a th:href="@{/adatbazis(tab='eloadasok')}"
                            class="button primary fit"
                            th:classappend="${activeTab == 'eloadasok'} ? 'active'">Előadások</a>
                     </li>
@@ -166,18 +182,21 @@
     </article>
 
     <footer id="footer">
-        <ul class="copyright"><li>&copy; Minden jog fenntartva.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li></ul>
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
     </footer>
 
 </div>
 
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/jquery.scrollex.min.js"></script>
-<script src="/assets/js/jquery.scrolly.min.js"></script>
-<script src="/assets/js/browser.min.js"></script>
-<script src="/assets/js/breakpoints.min.js"></script>
-<script src="/assets/js/util.js"></script>
-<script src="/assets/js/main.js"></script>
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
 
 </body>
 </html>

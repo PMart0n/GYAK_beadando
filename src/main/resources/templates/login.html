@@ -6,10 +6,8 @@
     <title>Bejelentkezés</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
-
-
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
 </head>
 
 <body class="is-preload">
@@ -17,33 +15,26 @@
 
     <!-- HEADER + MENÜ -->
     <header id="header">
-        <h1><a href="/">MoziDB</a></h1>
+        <h1><a th:href="@{/}">MoziDB</a></h1>
         <nav id="nav">
             <ul>
                 <li class="special">
                     <a href="#menu" class="menuToggle"><span>Menü</span></a>
                     <div id="menu">
                         <ul>
-                            <li><a href="/">Főoldal</a></li>
-                            <li><a href="/adatbazis">Adatbázis</a></li>
-                            <li><a href="/kapcsolat">Kapcsolat</a></li>
-                            <li><a href="/diagram">Diagram</a></li>
+                            <li><a th:href="@{/}">Főoldal</a></li>
+                            <li><a th:href="@{/adatbazis}">Adatbázis</a></li>
+                            <li><a th:href="@{/kapcsolat}">Kapcsolat</a></li>
+                            <li><a th:href="@{/diagram}">Diagram</a></li>
 
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a href="/film-kezeles" style="color: #ED4933;">CRUD (Szerkesztés)</a>
-                            </li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a href="/admin" style="color: #ED4933;">Admin Felület</a>
-                            </li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/film-kezeles}" style="color: #ED4933;">CRUD (Szerkesztés)</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin}" style="color: #ED4933;">Admin Felület</a></li>
 
-                            <li><a href="/rest-api">RESTful API</a></li>
+                            <li><a th:href="@{/rest-api}">RESTful API</a></li>
 
-                            <li sec:authorize="isAuthenticated()">
-                                <a href="/uzenetek">Üzenetek</a>
-                            </li>
-
-                            <li sec:authorize="!isAuthenticated()"><a href="/login">Belépés</a></li>
-                            <li sec:authorize="!isAuthenticated()"><a href="/register">Regisztráció</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/uzenetek}">Üzenetek</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Belépés</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Regisztráció</a></li>
 
                             <li sec:authorize="isAuthenticated()">
                                 <form th:action="@{/logout}" method="post" style="margin: 0;">
@@ -56,7 +47,6 @@
             </ul>
         </nav>
     </header>
-
 
     <!-- MAIN -->
     <article id="main">
@@ -99,7 +89,6 @@
         </section>
     </article>
 
-
     <!-- FOOTER -->
     <footer id="footer">
         <ul class="copyright">
@@ -109,13 +98,13 @@
     </footer>
 </div>
 
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/jquery.scrollex.min.js"></script>
-<script src="/assets/js/jquery.scrolly.min.js"></script>
-<script src="/assets/js/browser.min.js"></script>
-<script src="/assets/js/breakpoints.min.js"></script>
-<script src="/assets/js/util.js"></script>
-<script src="/assets/js/main.js"></script>
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
 
 </body>
 </html>

@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                                 "/rest-api",
                                 "/kapcsolat",
                                 "/kapcsolat-kuld",
-                                "/register",
+                                "/register","/do-register",
                                 "/do-register",
                                 "/login",
                                 "/assets/**",
