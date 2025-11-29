@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kapcsolat</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
+    <style>
+        form { max-width: 600px; margin: 0 auto; }
+        label { font-weight: bold; margin-top: 15px; display: block; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #ED4933;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff624a;
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .message.error { color: #ff3333; }
+        .message.success { color: #33cc33; }
+    </style>
+</head>
+<body class="is-preload">
+
+<div id="page-wrapper">
+
+    <!-- NAVIGATION HEADER -->
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/film-kezeles" style="color: #ED4933;">CRUD (Szerkesztés)</a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/admin" style="color: #ED4933;">Admin Felület</a>
+                            </li>
+
+                            <li><a href="/rest-api">RESTful API</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/uzenetek">Üzenetek</a>
+                            </li>
+
+                            <li sec:authorize="!isAuthenticated()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a href="/register">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                    <input type="submit" value="Kijelentkezés" class="button fit small" />
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <article id="main">
+        <header>
+            <h2>Kapcsolat</h2>
+            <p>Küldj üzenetet a rendszer üzemeltetőinek</p>
+        </header>
+
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <!-- ERROR / SUCCESS ÜZENETEK -->
+                <div th:if="${error}" class="message error" th:text="${error}"></div>
+                <div th:if="${success}" class="message success" th:text="${success}"></div>
+
+                <!-- KAPCSOLAT FORM -->
+                <form th:action="@{/kapcsolat-kuld}" method="post">
+
+                    <label>Küldő neve:</label>
+                    <input type="text" name="kuldoNeve" placeholder="Add meg a neved..." required />
+
+                    <label>Email címed:</label>
+                    <input type="email" name="email" placeholder="Add meg az email címed..." required />
+
+                    <label>Üzenet:</label>
+                    <textarea name="szoveg" rows="6" placeholder="Írd ide az üzenetet..." required></textarea>
+
+                    <button type="submit">Üzenet Küldése</button>
+                </form>
+
+            </div>
+        </section>
+    </article>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
+        </ul>
+    </footer>
+
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</body>
+</html>

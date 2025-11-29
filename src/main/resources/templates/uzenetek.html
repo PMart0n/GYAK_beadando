@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Beérkezett üzenetek</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
+    <style>
+        table {
+            width: 100%;
+            margin-top: 30px;
+        }
+        th {
+            background-color: #ED4933;
+            color: white;
+            text-align: left;
+            padding: 10px;
+        }
+        td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+<div id="page-wrapper">
+
+    <!-- HEADER + MENÜ -->
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/film-kezeles" style="color: #ED4933;">CRUD (Szerkesztés)</a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/admin" style="color: #ED4933;">Admin Felület</a>
+                            </li>
+
+                            <li><a href="/rest-api">RESTful API</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/uzenetek">Üzenetek</a>
+                            </li>
+
+                            <li sec:authorize="!isAuthenticated()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a href="/register">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                    <input type="submit" value="Kijelentkezés" class="button fit small" />
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <article id="main">
+        <header>
+            <h2>Beérkezett üzenetek</h2>
+            <p>Az űrlapon keresztül beküldött üzenetek listája</p>
+        </header>
+
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>Küldő neve</th>
+                            <th>Email</th>
+                            <th>Üzenet</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${uzenetek}">
+                            <td th:text="${u.kuldoNeve}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.szoveg}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </article>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
+        </ul>
+    </footer>
+
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</body>
+</html>

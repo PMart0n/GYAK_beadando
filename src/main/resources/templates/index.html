@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>MoziDB – Főoldal</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+<div id="page-wrapper">
+
+    <header id="header" class="alt">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/film-kezeles" style="color: #ED4933;">CRUD (Szerkesztés)</a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/admin" style="color: #ED4933;">Admin Felület</a>
+                            </li>
+
+                            <li><a href="/rest-api">RESTful API</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/uzenetek">Üzenetek</a>
+                            </li>
+
+                            <li sec:authorize="!isAuthenticated()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a href="/register">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                    <input type="submit" value="Kijelentkezés" class="button fit small" />
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <article id="main">
+        <header>
+            <h2>Üdvözöl a MoziDB!</h2>
+            <p>A filmek és mozik világa</p>
+        </header>
+
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <p style="font-size: 1.2em; text-align: center; margin-bottom: 2em;">
+                    A MoziDB egy modern adatbázis rendszer, amelyben nyilvántartjuk a legújabb filmeket,
+                    a város legjobb mozijait és az aktuális előadásokat. <br />
+                    Böngéssz az adatok között, vagy jelentkezz be a további funkciókért!
+                </p>
+
+                <div class="col-12">
+                <span class="image fit">
+                    <img src="/images/mozi_fooldal.jpg" alt="Hangulatos mozi bejárat"
+                         style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);" />
+                </span>
+                </div>
+
+                <br />
+
+                <div style="text-align: center; margin-top: 2em;">
+                    <a href="/adatbazis" class="button primary large">Tovább az Adatbázishoz</a>
+                </div>
+
+            </div>
+        </section>
+    </article>
+
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
+        </ul>
+    </footer>
+
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</body>
+</html>
