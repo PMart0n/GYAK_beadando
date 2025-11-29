@@ -9,4 +9,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     // majd keresés felhasználónév alapján belépéshez
     User findByUsername(String username);
+
 }

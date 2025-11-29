@@ -1,42 +1,50 @@
-package com.example.gyak_beadando.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-                .csrf(csrf -> csrf.disable()) // Kikapcsoljuk az űrlapvédelmet fejlesztés alatt
-                .authorizeHttpRequests((requests) -> requests
-                        // Itt soroljuk fel, mit láthat BÁRKI (permitAll):
-                        .requestMatchers(
-                                "/",
-                                "/home",
-                                "/adatbazis",
-                                "/kapcsolat",
-                                "/diagram",
-                                "/rest-api",
-                                "/uzenetek",
-                                "/film-kezeles/**",
-                                "/admin",
-                                "/api/**",
-                                "/assets/**",
-                                "/images/**",
-                                "/login",
-                                "/regisztral"
-                        ).permitAll()
-                        .anyRequest().authenticated() // Minden más védett marad
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/adatbazis", "/kapcsolat", "/register", "/do-register",
+                                "/login", "/assets/**", "/images/**", "/diagram", "/rest-api",
+                                "/api/**")
+                        .permitAll()
+                        .requestMatchers("/uzenetek").authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form.permitAll())
-                .logout((logout) -> logout.permitAll());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder auth =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+
+        return auth.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

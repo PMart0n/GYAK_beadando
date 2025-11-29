@@ -12,7 +12,9 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String registerPage() {
+    public String registerPage(Model model) {
+        model.addAttribute("user", new User());
         return "register";
     }
+
 }
