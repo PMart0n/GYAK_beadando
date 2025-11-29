@@ -1,16 +1,45 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <title>Admin – MoziDB</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
+    <style>
+        .admin-box {
+            max-width: 550px;
+            margin: 40px auto;
+            padding: 2em;
+            background: #2a2a2a;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        .admin-box ul {
+            list-style: none;
+            padding: 0;
+            line-height: 2em;
+        }
+
+        .admin-box li {
+            font-size: 1.1em;
+            border-bottom: 1px solid #444;
+            padding: 8px 0;
+        }
+
+        .admin-box strong {
+            color: #ED4933;
+        }
+    </style>
 </head>
 
 <body class="is-preload">
 <div id="page-wrapper">
 
+    <!-- HEADER -->
     <header id="header">
         <h1><a href="/">MoziDB</a></h1>
         <nav id="nav">
@@ -23,25 +52,16 @@
                             <li><a href="/adatbazis">Adatbázis</a></li>
                             <li><a href="/kapcsolat">Kapcsolat</a></li>
                             <li><a href="/diagram">Diagram</a></li>
-                            <li><a href="/mozi-kezeles">CRUD (Szerkesztés)</a></li>
+                            <li><a href="/film-kezeles">CRUD (Film szerkesztés)</a></li>
                             <li><a href="/rest-api">RESTful</a></li>
 
-                            <li sec:authorize="isAuthenticated()">
-                                <a href="/uzenetek">Üzenetek</a>
-                            </li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a href="/admin">Admin</a>
-                            </li>
+                            <li sec:authorize="isAuthenticated()"><a href="/uzenetek">Üzenetek</a></li>
 
-                            <li sec:authorize="isAnonymous()">
-                                <a href="/login">Belépés</a>
-                            </li>
-                            <li sec:authorize="isAnonymous()">
-                                <a href="/register">Regisztráció</a>
-                            </li>
-                            <li sec:authorize="isAuthenticated()">
-                                <a href="/logout">Kijelentkezés</a>
-                            </li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="/admin">Admin</a></li>
+
+                            <li sec:authorize="isAnonymous()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="isAnonymous()"><a href="/register">Regisztráció</a></li>
+                            <li sec:authorize="isAuthenticated()"><a href="/logout">Kijelentkezés</a></li>
                         </ul>
                     </div>
                 </li>
@@ -49,25 +69,32 @@
         </nav>
     </header>
 
+    <!-- MAIN -->
     <article id="main">
         <header>
             <h2>Admin felület</h2>
-            <p>Rendszerstatisztikák és kezelői információk</p>
+            <p>Rendszer-statisztikák és kezelői információk</p>
         </header>
 
         <section class="wrapper style5">
             <div class="inner">
 
-                <h3>Statisztikák</h3>
+                <div class="admin-box">
 
-                <ul>
-                    <li><strong>Filmek száma:</strong> <span th:text="${filmCount}"></span></li>
-                    <li><strong>Mozik száma:</strong> <span th:text="${moziCount}"></span></li>
-                    <li><strong>Beérkezett üzenetek:</strong> <span th:text="${uzenetCount}"></span></li>
-                    <li><strong>Regisztrált felhasználók:</strong> <span th:text="${userCount}"></span></li>
-                </ul>
+                    <h3>Statisztikák</h3>
 
-                <p>További admin funkciók igény szerint bővíthetők.</p>
+                    <ul>
+                        <li><strong>Filmek száma:</strong> <span th:text="${filmCount}"></span></li>
+                        <li><strong>Mozik száma:</strong> <span th:text="${moziCount}"></span></li>
+                        <li><strong>Beérkezett üzenetek:</strong> <span th:text="${uzenetCount}"></span></li>
+                        <li><strong>Regisztrált felhasználók:</strong> <span th:text="${userCount}"></span></li>
+                    </ul>
+
+                    <p style="margin-top: 20px; text-align:center;">
+                        További admin funkciók később könnyen bővíthetők.
+                    </p>
+
+                </div>
 
             </div>
         </section>
@@ -75,6 +102,7 @@
 
 </div>
 
+<script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/main.js"></script>
 
 </body>

@@ -1,50 +1,45 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Mozi Adatbázis - Adatok</title>
+    <title>Mozi Adatbázis – Adatok</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
     <style>
         table { margin-bottom: 50px; }
-        h2, h3 { margin-top: 40px; color: #ffffff; border-bottom: 2px solid #ED4933; padding-bottom: 10px; display: inline-block; }
-        .wrapper.style5 { padding: 4em 0 2em 0; }
-        /* Lapozó gombok stílusa */
-        .pagination { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
-        .pagination a { text-decoration: none; font-weight: bold; }
-        /* Ugró gombok térköze */
-        .jump-links { margin-bottom: 3em; }
-
-        /* Fel a tetejére gomb stílusa */
+        h3 {
+            margin-top: 40px;
+            color: #ffffff;
+            border-bottom: 2px solid #ED4933;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
         #back-to-top {
             position: fixed;
             bottom: 20px;
-            left: 20px; /* Bal alsó sarok */
+            left: 20px;
             z-index: 99;
-            font-size: 0.8em;
-            border: none;
-            outline: none;
             background-color: #ED4933;
-            color: white;
-            cursor: pointer;
+            color: #fff;
             padding: 10px 15px;
             border-radius: 4px;
             opacity: 0.8;
-            transition: opacity 0.3s;
             text-decoration: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
-        #back-to-top:hover {
-            opacity: 1;
-            background-color: #ff5e45;
-        }
+        #back-to-top:hover { opacity: 1; background-color: #ff5e45; }
     </style>
 </head>
-<body class="is-preload" id="top"> <a href="#top" id="back-to-top" class="scrolly">▲ Fel</a>
+
+<body class="is-preload" id="top">
+<a href="#top" id="back-to-top" class="scrolly">▲ Fel</a>
 
 <div id="page-wrapper">
 
+    <!-- HEADER -->
     <header id="header">
         <h1><a href="/">MoziDB</a></h1>
         <nav id="nav">
@@ -53,19 +48,24 @@
                     <a href="#menu" class="menuToggle"><span>Menü</span></a>
                     <div id="menu">
                         <ul>
+
+                            <!-- ALAP MENÜ -->
                             <li><a href="/">Főoldal</a></li>
                             <li><a href="/adatbazis">Adatbázis</a></li>
                             <li><a href="/kapcsolat">Kapcsolat</a></li>
                             <li><a href="/diagram">Diagram</a></li>
-
                             <li><a href="/film-kezeles">CRUD (Film Szerkesztés)</a></li>
                             <li><a href="/rest-api">RESTful</a></li>
 
-                            <li><a href="/uzenetek">Üzenetek</a></li>
-                            <li><a href="/admin">Admin</a></li>
+                            <!-- AUTH MENÜ -->
+                            <li sec:authorize="isAuthenticated()"><a href="/uzenetek">Üzenetek</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="/admin">Admin</a></li>
 
-                            <li><a href="/login">Belépés</a></li>
-                            <li><a href="/regisztral">Regisztráció</a></li>
+                            <li sec:authorize="isAnonymous()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="isAnonymous()"><a href="/register">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()"><a href="/logout">Kijelentkezés</a></li>
+
                         </ul>
                     </div>
                 </li>
@@ -73,23 +73,27 @@
         </nav>
     </header>
 
+    <!-- TARTALOM -->
     <article id="main">
         <header>
             <h2>Adatbázis Tartalma</h2>
-            <p>A rendszerben tárolt adatok listája</p>
+            <p>Minden adat egy helyen</p>
         </header>
 
         <section class="wrapper style5">
             <div class="inner">
 
+                <!-- UGRÓLINKEK -->
                 <p>Gyorsugrás a táblázatokhoz:</p>
                 <ul class="actions fit jump-links">
                     <li><a href="#filmek-tabla" class="button primary fit scrolly">Filmek</a></li>
                     <li><a href="#mozik-tabla" class="button primary fit scrolly">Mozik</a></li>
                     <li><a href="#eloadasok-tabla" class="button primary fit scrolly">Előadások</a></li>
                 </ul>
+
                 <hr />
 
+                <!-- FILMEK -->
                 <h3 id="filmek-tabla">Filmek listája</h3>
                 <div class="table-wrapper">
                     <table class="alt">
@@ -114,6 +118,7 @@
 
                 <hr />
 
+                <!-- MOZIK -->
                 <h3 id="mozik-tabla">Mozik listája</h3>
                 <div class="table-wrapper">
                     <table class="alt">
@@ -138,6 +143,7 @@
 
                 <hr />
 
+                <!-- ELŐADÁSOK -->
                 <h3 id="eloadasok-tabla">Előadások (100 db / oldal)</h3>
                 <div class="table-wrapper">
                     <table class="alt">
@@ -162,31 +168,41 @@
                     </table>
                 </div>
 
+                <!-- LAPOZÁS -->
                 <div class="pagination">
-                    <a th:if="${eloadasok.hasPrevious()}" th:href="@{/adatbazis(page=${currentPage - 1})}" class="button small">&laquo; Előző</a>
+                    <a th:if="${eloadasok.hasPrevious()}"
+                       th:href="@{/adatbazis(page=${currentPage - 1})}"
+                       class="button small">&laquo; Előző</a>
 
-                    <span>Oldal: <span th:text="${currentPage + 1}"></span> / <span th:text="${eloadasok.totalPages}"></span></span>
+                    <span>Oldal: <span th:text="${currentPage + 1}"></span> /
+                        <span th:text="${eloadasok.totalPages}"></span>
+                    </span>
 
-                    <a th:if="${eloadasok.hasNext()}" th:href="@{/adatbazis(page=${currentPage + 1})}" class="button small">Következő &raquo;</a>
+                    <a th:if="${eloadasok.hasNext()}"
+                       th:href="@{/adatbazis(page=${currentPage + 1})}"
+                       class="button small">Következő &raquo;</a>
                 </div>
 
             </div>
         </section>
     </article>
 
+    <!-- FOOTER -->
     <footer id="footer">
-        <ul class="copyright"><li>&copy; Minden jog fenntartva.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li></ul>
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
+        </ul>
     </footer>
-
 </div>
 
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 </body>
 </html>

@@ -1,16 +1,25 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Mozi Adatbázis - Kezdőlap</title>
+    <title>MoziDB – Főoldal</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-</head>
-<body class="landing is-preload">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
 
+    <style>
+        table.alt thead th {
+            background-color: #ED4933 !important;
+            color: white !important;
+        }
+        table { margin-bottom: 50px; }
+    </style>
+</head>
+
+<body class="is-preload">
 <div id="page-wrapper">
 
+    <!-- HEADER -->
     <header id="header" class="alt">
         <h1><a href="/">MoziDB</a></h1>
         <nav id="nav">
@@ -23,15 +32,28 @@
                             <li><a href="/adatbazis">Adatbázis</a></li>
                             <li><a href="/kapcsolat">Kapcsolat</a></li>
                             <li><a href="/diagram">Diagram</a></li>
-
                             <li><a href="/film-kezeles">CRUD (Film Szerkesztés)</a></li>
                             <li><a href="/rest-api">RESTful</a></li>
 
-                            <li><a href="/uzenetek">Üzenetek</a></li>
-                            <li><a href="/admin">Admin</a></li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/uzenetek">Üzenetek</a>
+                            </li>
 
-                            <li><a href="/login">Belépés</a></li>
-                            <li><a href="/regisztral">Regisztráció</a></li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/admin">Admin</a>
+                            </li>
+
+                            <li sec:authorize="isAnonymous()">
+                                <a href="/login">Belépés</a>
+                            </li>
+
+                            <li sec:authorize="isAnonymous()">
+                                <a href="/register">Regisztráció</a>
+                            </li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/logout">Kijelentkezés</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -39,34 +61,95 @@
         </nav>
     </header>
 
-    <section id="banner">
-        <div class="inner">
-            <h2>Mozi Adatbázis</h2>
-            <p>A Művészfilm Kht. több városban is üzemeltet mozit.<br />
-                A fenntartott mozik mindegyike legfeljebb napi egy vetítést tart.<br />
-                A nézőszámokról és bevételekről a cég pontos nyilvántartást vezet.</p>
-            <ul class="actions special">
-                <li><a href="/adatbazis" class="button primary">Adatok Megtekintése</a></li>
-            </ul>
-        </div>
-        <a href="#footer" class="more scrolly">Tovább</a>
-    </section>
+    <!-- TARTALOM -->
+    <article id="main">
+        <header>
+            <h2>Mozi Adatbázis – Főoldal</h2>
+            <p>Mozik, filmek és adatok áttekintése</p>
+        </header>
 
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <!-- RÖVID ISMERTETŐ -->
+                <p>A MoziDB rendszerben filmeket, mozikat és előadásokat tartunk nyilván.
+                    Az alábbi gyors áttekintésben megtekintheted a legfontosabb adatokat.</p>
+
+                <hr />
+
+                <!-- FILMEK -->
+                <h3>Filmek listája</h3>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cím</th>
+                            <th>Év</th>
+                            <th>Hossz (perc)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="film : ${filmek}">
+                            <td th:text="${film.id}"></td>
+                            <td th:text="${film.cim}"></td>
+                            <td th:text="${film.ev}"></td>
+                            <td th:text="${film.hossz}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr />
+
+                <!-- MOZIK -->
+                <h3>Mozik listája</h3>
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Név</th>
+                            <th>Város</th>
+                            <th>Férőhely</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="mozi : ${mozik}">
+                            <td th:text="${mozi.id}"></td>
+                            <td th:text="${mozi.nev}"></td>
+                            <td th:text="${mozi.varos}"></td>
+                            <td th:text="${mozi.ferohely}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="actions">
+                    <li><a href="/adatbazis" class="button primary">Részletes adatbázis megtekintése</a></li>
+                </ul>
+
+            </div>
+        </section>
+    </article>
+
+    <!-- FOOTER -->
     <footer id="footer">
         <ul class="copyright">
-            <li>&copy; Minden jog fenntartva.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
         </ul>
     </footer>
 
 </div>
 
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 </body>
 </html>

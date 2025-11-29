@@ -23,14 +23,11 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Security 3.x-ben így regisztráljuk az auth providert:
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -41,8 +38,8 @@ public class WebSecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Mindenki által elérhető oldalak:
                         .requestMatchers(
                                 "/",
                                 "/home",
@@ -50,6 +47,7 @@ public class WebSecurityConfig {
                                 "/diagram",
                                 "/rest-api",
                                 "/kapcsolat",
+                                "/kapcsolat-kuld",
                                 "/register",
                                 "/do-register",
                                 "/login",
@@ -57,14 +55,8 @@ public class WebSecurityConfig {
                                 "/images/**",
                                 "/api/**"
                         ).permitAll()
-
-                        // Üzenetek menü: csak bejelentkezett user
                         .requestMatchers("/uzenetek/**").authenticated()
-
-                        // Admin menü: csak admin
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-
-                        // minden más csak bejelentkezve
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -1,28 +1,29 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <title>MoziDB - Film Szerkesztés</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/assets/css/main.css" />
     <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+
     <style>
-        /* Kényszerítés, űrlap mező olvasható legyen */
         input[type="text"],
         input[type="password"],
         input[type="email"],
         input[type="number"],
         select,
         textarea {
-            color: #2e3842 !important; /* Sötétszürke szöveg */
-            background-color: #ffffff !important; /* Fehér háttér */
-            border: 1px solid #ccc !important; /* Vékony keret */
+            color: #2e3842 !important;
+            background-color: #ffffff !important;
+            border: 1px solid #ccc !important;
             font-weight: normal;
         }
-
-
     </style>
 </head>
+
 <body class="is-preload">
 <div id="page-wrapper">
 
@@ -40,10 +41,13 @@
                             <li><a href="/diagram">Diagram</a></li>
                             <li><a href="/film-kezeles">CRUD (Film Szerkesztés)</a></li>
                             <li><a href="/rest-api">RESTful</a></li>
-                            <li><a href="/uzenetek">Üzenetek</a></li>
-                            <li><a href="/admin">Admin</a></li>
-                            <li><a href="/login">Belépés</a></li>
-                            <li><a href="/regisztral">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()"><a href="/uzenetek">Üzenetek</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="/admin">Admin</a></li>
+
+                            <li sec:authorize="isAnonymous()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="isAnonymous()"><a href="/register">Regisztráció</a></li>
+                            <li sec:authorize="isAuthenticated()"><a href="/logout">Kijelentkezés</a></li>
                         </ul>
                     </div>
                 </li>
@@ -56,10 +60,13 @@
             <h2>Film Űrlap</h2>
             <p>Adatok megadása vagy módosítása</p>
         </header>
+
         <section class="wrapper style5">
             <div class="inner">
 
-                <form method="post" th:action="@{/film-kezeles/mentes}" th:object="${film}">
+                <form method="post"
+                      th:action="@{/film-kezeles/mentes}"
+                      th:object="${film}">
 
                     <input type="hidden" th:field="*{id}" />
 
@@ -86,7 +93,9 @@
                             </ul>
                         </div>
                     </div>
+
                 </form>
+
             </div>
         </section>
     </article>
@@ -94,6 +103,7 @@
     <footer id="footer">
         <ul class="copyright"><li>&copy; Minden jog fenntartva.</li></ul>
     </footer>
+
 </div>
 
 <script src="/assets/js/jquery.min.js"></script>
@@ -103,5 +113,6 @@
 <script src="/assets/js/breakpoints.min.js"></script>
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
+
 </body>
 </html>

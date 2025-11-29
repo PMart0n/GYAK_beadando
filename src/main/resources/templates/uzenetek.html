@@ -1,34 +1,108 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Üzenetek</title>
+    <title>Beérkezett üzenetek</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/assets/css/main.css" />
-</head>
-<body>
+    <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
 
-<section>
-    <header class="major">
-        <h2>Beérkezett üzenetek</h2>
+    <style>
+        table {
+            width: 100%;
+            margin-top: 30px;
+        }
+        th {
+            background-color: #ED4933;
+            color: white;
+            text-align: left;
+            padding: 10px;
+        }
+        td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+<div id="page-wrapper">
+
+    <!-- HEADER + MENÜ -->
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+                            <li><a href="/film-kezeles">CRUD (Film Szerkesztés)</a></li>
+                            <li><a href="/rest-api">RESTful</a></li>
+                            <li><a href="/uzenetek">Üzenetek</a></li>
+                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/login">Belépés</a></li>
+                            <li><a href="/register">Regisztráció</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Küldő neve</th>
-            <th>Email</th>
-            <th>Üzenet</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="u : ${uzenetek}">
-            <td th:text="${u.kuldoNeve}"></td>
-            <td th:text="${u.email}"></td>
-            <td th:text="${u.szoveg}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- MAIN CONTENT -->
+    <article id="main">
+        <header>
+            <h2>Beérkezett üzenetek</h2>
+            <p>Az űrlapon keresztül beküldött üzenetek listája</p>
+        </header>
 
-</section>
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <div class="table-wrapper">
+                    <table class="alt">
+                        <thead>
+                        <tr>
+                            <th>Küldő neve</th>
+                            <th>Email</th>
+                            <th>Üzenet</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${uzenetek}">
+                            <td th:text="${u.kuldoNeve}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.szoveg}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </article>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+            <li>Design: HTML5 UP</li>
+        </ul>
+    </footer>
+
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 </body>
 </html>

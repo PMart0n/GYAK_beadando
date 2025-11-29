@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <title>MoziDB - Film Kezelő</title>
     <meta charset="utf-8" />
@@ -7,9 +9,11 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
 </head>
+
 <body class="is-preload">
 <div id="page-wrapper">
 
+    <!-- HEADER -->
     <header id="header">
         <h1><a href="/">MoziDB</a></h1>
         <nav id="nav">
@@ -18,16 +22,22 @@
                     <a href="#menu" class="menuToggle"><span>Menü</span></a>
                     <div id="menu">
                         <ul>
+
                             <li><a href="/">Főoldal</a></li>
                             <li><a href="/adatbazis">Adatbázis</a></li>
                             <li><a href="/kapcsolat">Kapcsolat</a></li>
                             <li><a href="/diagram">Diagram</a></li>
                             <li><a href="/film-kezeles">CRUD (Film Szerkesztés)</a></li>
                             <li><a href="/rest-api">RESTful</a></li>
-                            <li><a href="/uzenetek">Üzenetek</a></li>
-                            <li><a href="/admin">Admin</a></li>
-                            <li><a href="/login">Belépés</a></li>
-                            <li><a href="/regisztral">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()"><a href="/uzenetek">Üzenetek</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="/admin">Admin</a></li>
+
+                            <li sec:authorize="isAnonymous()"><a href="/login">Belépés</a></li>
+                            <li sec:authorize="isAnonymous()"><a href="/register">Regisztráció</a></li>
+
+                            <li sec:authorize="isAuthenticated()"><a href="/logout">Kijelentkezés</a></li>
+
                         </ul>
                     </div>
                 </li>
@@ -35,11 +45,13 @@
         </nav>
     </header>
 
+    <!-- MAIN CONTENT -->
     <article id="main">
         <header>
             <h2>Film Kezelő</h2>
             <p>Új film felvétele, módosítása és törlése</p>
         </header>
+
         <section class="wrapper style5">
             <div class="inner">
 
@@ -58,6 +70,7 @@
                             <th>Műveletek</th>
                         </tr>
                         </thead>
+
                         <tbody>
                         <tr th:each="film : ${filmek}">
                             <td th:text="${film.id}"></td>
@@ -65,19 +78,30 @@
                             <td th:text="${film.ev}"></td>
                             <td th:text="${film.hossz}"></td>
                             <td>
-                                <a th:href="@{/film-kezeles/szerkesztes/{id}(id=${film.id})}" class="button small">Szerkeszt</a>
-                                <a th:href="@{/film-kezeles/torles/{id}(id=${film.id})}" class="button small primary" onclick="return confirm('Biztosan törölni akarod ezt a filmet?')">Töröl</a>
+                                <a th:href="@{/film-kezeles/szerkesztes/{id}(id=${film.id})}"
+                                   class="button small">Szerkeszt</a>
+
+                                <a th:href="@{/film-kezeles/torles/{id}(id=${film.id})}"
+                                   class="button small primary"
+                                   onclick="return confirm('Biztosan törölni akarod ezt a filmet?')">
+                                    Töröl
+                                </a>
                             </td>
                         </tr>
                         </tbody>
+
                     </table>
                 </div>
+
             </div>
         </section>
     </article>
 
+    <!-- FOOTER -->
     <footer id="footer">
-        <ul class="copyright"><li>&copy; Minden jog fenntartva.</li></ul>
+        <ul class="copyright">
+            <li>&copy; Minden jog fenntartva.</li>
+        </ul>
     </footer>
 
 </div>
