@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>MoziDB - REST API</title>
     <meta charset="utf-8" />
@@ -15,22 +16,37 @@
         <h1><a href="/">MoziDB</a></h1>
         <nav id="nav">
             <ul>
-                <li class="special">
-                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
-                    <div id="menu">
-                        <ul>
-                            <li><a href="/">Főoldal</a></li>
-                            <li><a href="/adatbazis">Adatbázis</a></li>
-                            <li><a href="/kapcsolat">Kapcsolat</a></li>
-                            <li><a href="/diagram">Diagram</a></li>
-                            <li><a href="/mozi-kezeles">CRUD (Szerkesztés)</a></li>
-                            <li><a href="/rest-api">RESTful</a></li>
-                            <li><a href="/uzenetek">Üzenetek</a></li>
-                            <li><a href="/admin">Admin</a></li>
-                            <li><a href="/login">Belépés</a></li>
-                            <li><a href="/regisztral">Regisztráció</a></li>
-                        </ul>
-                    </div>
+
+                <!-- Mindig látszódó menüpontok -->
+                <li><a href="/">Főoldal</a></li>
+                <li><a href="/adatbazis">Adatbázis</a></li>
+                <li><a href="/kapcsolat">Kapcsolat</a></li>
+                <li><a href="/diagram">Diagram</a></li>
+                <li><a href="/mozi-kezeles">CRUD (Szerkesztés)</a></li>
+                <li><a href="/rest-api">RESTful</a></li>
+
+                <!-- Csak bejelentkezett felhasználóknak -->
+                <li sec:authorize="isAuthenticated()">
+                    <a href="/uzenetek">Üzenetek</a>
+                </li>
+
+                <!-- Csak ADMIN-nak -->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a href="/admin">Admin</a>
+                </li>
+
+                <!-- Vendég menüpontok -->
+                <li sec:authorize="isAnonymous()">
+                    <a href="/login">Belépés</a>
+                </li>
+
+                <li sec:authorize="isAnonymous()">
+                    <a href="/register">Regisztráció</a>
+                </li>
+
+                <!-- Bejelentkezett felhasználónak kijelentkezés -->
+                <li sec:authorize="isAuthenticated()">
+                    <a href="/logout">Kijelentkezés</a>
                 </li>
             </ul>
         </nav>

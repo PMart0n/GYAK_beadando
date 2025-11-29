@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Admin – MoziDB</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+</head>
+
+<body class="is-preload">
+<div id="page-wrapper">
+
+    <header id="header">
+        <h1><a href="/">MoziDB</a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="special">
+                    <a href="#menu" class="menuToggle"><span>Menü</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a href="/">Főoldal</a></li>
+                            <li><a href="/adatbazis">Adatbázis</a></li>
+                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                            <li><a href="/diagram">Diagram</a></li>
+                            <li><a href="/mozi-kezeles">CRUD (Szerkesztés)</a></li>
+                            <li><a href="/rest-api">RESTful</a></li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/uzenetek">Üzenetek</a>
+                            </li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a href="/admin">Admin</a>
+                            </li>
+
+                            <li sec:authorize="isAnonymous()">
+                                <a href="/login">Belépés</a>
+                            </li>
+                            <li sec:authorize="isAnonymous()">
+                                <a href="/register">Regisztráció</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a href="/logout">Kijelentkezés</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <article id="main">
+        <header>
+            <h2>Admin felület</h2>
+            <p>Rendszerstatisztikák és kezelői információk</p>
+        </header>
+
+        <section class="wrapper style5">
+            <div class="inner">
+
+                <h3>Statisztikák</h3>
+
+                <ul>
+                    <li><strong>Filmek száma:</strong> <span th:text="${filmCount}"></span></li>
+                    <li><strong>Mozik száma:</strong> <span th:text="${moziCount}"></span></li>
+                    <li><strong>Beérkezett üzenetek:</strong> <span th:text="${uzenetCount}"></span></li>
+                    <li><strong>Regisztrált felhasználók:</strong> <span th:text="${userCount}"></span></li>
+                </ul>
+
+                <p>További admin funkciók igény szerint bővíthetők.</p>
+
+            </div>
+        </section>
+    </article>
+
+</div>
+
+<script src="/assets/js/main.js"></script>
+
+</body>
+</html>
